@@ -258,37 +258,47 @@ function generatePalette() {
 
 // Random palette generation
 function generateRandomPalette() {
-  const colorCount = parseInt(document.getElementById("colors-count").value);
-  const paletteContainer = document.getElementById("palette");
-  paletteContainer.innerHTML = "";
+  // Generate random base color
+  const randomColor = `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
 
-  const moodSelect = document.getElementById("mood-select");
-  const baseColor = moodSelect.value
-    ? moodBaseColors[moodSelect.value]
-    : `#${Math.floor(Math.random() * 16777215)
-        .toString(16)
-        .padStart(6, "0")}`;
+  // Randomly select number of colors (3-6)
+  const colorCounts = [3, 4, 5, 6];
+  const randomCount =
+    colorCounts[Math.floor(Math.random() * colorCounts.length)];
 
-  document.getElementById("base-color").value = baseColor;
-
+  // Randomly select harmony type
   const harmonyTypes = ["analogous", "complementary", "triadic"];
   const randomHarmony =
     harmonyTypes[Math.floor(Math.random() * harmonyTypes.length)];
 
-  document.getElementById("harmony-type").value = randomHarmony;
+  // Randomly select mood
+  const moods = ["happy", "calm", "intense", "sad", "energetic"];
+  const randomMood = moods[Math.floor(Math.random() * moods.length)];
 
+  // Update UI to reflect random selections
+  document.getElementById("base-color").value = randomColor;
+  document.getElementById("colors-count").value = randomCount;
+  document.getElementById("harmony-type").value = randomHarmony;
+  document.getElementById("mood-select").value = randomMood;
+
+  // Generate palette with random selections
   const palette = generateHarmoniousPalette(
-    baseColor,
+    randomColor,
     randomHarmony,
-    colorCount
+    randomCount
   );
+
+  // Display the palette
+  const paletteContainer = document.getElementById("palette");
+  paletteContainer.innerHTML = "";
 
   palette.forEach((colorSet, index) => {
     const box = createColorBox(colorSet, colorRoles[index]);
     paletteContainer.appendChild(box);
   });
 }
-
 // Toast notification function
 function showToast(message) {
   const toast = document.createElement("div");
