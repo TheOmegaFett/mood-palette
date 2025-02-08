@@ -184,11 +184,11 @@ const moodBaseColors = {
 // Main palette generation function
 function generateHarmoniousPalette(baseColor, harmonyType, count) {
   const color = new Color(baseColor);
-  const mood = document.getElementById("mood-select").value;
   let palette = [];
 
   switch (harmonyType) {
     case "analogous":
+      // Generate colors 30 degrees apart
       for (let i = 0; i < count; i++) {
         palette.push(
           color.clone().set({
@@ -199,47 +199,53 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
 
     case "complementary":
-      const complement = color.clone().set({ "lch.h": (h) => h + 180 });
-      const step = count > 2 ? 360 / count : 180;
+      palette = [color]; // Start with base color
 
-      for (let i = 0; i < count; i++) {
-        palette.push(
-          color.clone().set({
-            "lch.h": (h) => h + i * step,
-          })
-        );
+      // Add complement
+      palette.push(color.clone().set({ "lch.h": (h) => h + 180 }));
+
+      // If more colors needed, add variations between base and complement
+      if (count > 2) {
+        const step = 180 / (count - 1);
+        for (let i = 1; i < count - 1; i++) {
+          palette.push(
+            color.clone().set({
+              "lch.h": (h) => h + i * step,
+            })
+          );
+        }
       }
       break;
 
     case "triadic":
-      const triadicStep = 360 / count;
-      for (let i = 0; i < count; i++) {
-        palette.push(
-          color.clone().set({
-            "lch.h": (h) => h + i * triadicStep,
-          })
-        );
+      // True triadic colors at 120° intervals
+      palette = [
+        color,
+        color.clone().set({ "lch.h": (h) => h + 120 }),
+        color.clone().set({ "lch.h": (h) => h + 240 }),
+      ];
+
+      // If more colors needed, distribute evenly between triadic points
+      if (count > 3) {
+        const extraColors = count - 3;
+        const segmentSize = 120 / (extraColors + 1);
+
+        for (let i = 1; i <= extraColors; i++) {
+          palette.push(
+            color.clone().set({
+              "lch.h": (h) => h + i * segmentSize,
+            })
+          );
+        }
       }
       break;
   }
 
-  return palette.map((color, index) => {
-    const role = colorRoles[index];
-    const moodAdjustment =
-      mood && moodAdjustments[mood] && moodAdjustments[mood][role];
-
-    if (moodAdjustment) {
-      color.set(moodAdjustment);
-    }
-
-    return {
-      light: color.clone().set({ "lch.l": 70 }),
-      dark: color.clone().set({ "lch.l": 30 }),
-    };
-  });
-}
-
-// Separate function for generating palette
+  return palette.map((color) => ({
+    light: color.clone().set({ "lch.l": 70 }),
+    dark: color.clone().set({ "lch.l": 30 }),
+  }));
+} // Separate function for generating palette
 function generatePalette() {
   const baseColor = document.getElementById("base-color").value;
   const harmonyType = document.getElementById("harmony-type").value;
