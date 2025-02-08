@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Color Palette Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="light-theme">
+    <div class="theme-switch">
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider round"></span>
+      </label>
+      <span id="themeLabel">Dark Mode</span>
+    </div>
+
+    <div class="container">
+      <h1>🎨 Color Palette Generator</h1>
+      <div class="controls">
+        <!-- Add mood selector -->
+        <select id="mood-select">
+          <option value="happy">Happy 😊</option>
+          <option value="calm">Calm 🌿</option>
+          <option value="intense">Intense 🔥</option>
+          <option value="sad">Sad 😢</option>
+          <option value="energetic">Energetic ⚡</option>
+        </select>
+
+        <!-- Add color picker input -->
+        <input type="color" id="base-color" value="#4CAF50" />
+
+        <!-- Add harmony type selector -->
+        <select id="harmony-type">
+          <option value="analogous">Analogous</option>
+          <option value="complementary">Complementary</option>
+          <option value="triadic">Triadic</option>
+        </select>
+
+        <select id="colors-count">
+          <option value="3">3 Colors</option>
+          <option value="4">4 Colors</option>
+          <option value="5" selected>5 Colors</option>
+          <option value="6">6 Colors</option>
+        </select>
+
+        <button id="generateBtn">Generate Palette</button>
+        <button id="randomBtn">Random Palette</button>
+      </div>
+      <div id="palette" class="palette-container"></div>
+    </div>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
