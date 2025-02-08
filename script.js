@@ -184,6 +184,7 @@ const moodBaseColors = {
 // Main palette generation function
 function generateHarmoniousPalette(baseColor, harmonyType, count) {
   const color = new Color(baseColor);
+  const mood = document.getElementById("mood-select").value;
   let palette = [];
 
   switch (harmonyType) {
@@ -241,10 +242,21 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
   }
 
-  return palette.map((color) => ({
-    light: color.clone().set({ "lch.l": 70 }),
-    dark: color.clone().set({ "lch.l": 30 }),
-  }));
+  // Then apply mood adjustments to each color based on its role
+  return palette.map((color, index) => {
+    const role = colorRoles[index];
+
+    // Apply role-specific mood adjustments if they exist
+    if (mood && moodAdjustments[mood] && moodAdjustments[mood][role]) {
+      color.set(moodAdjustments[mood][role]);
+    }
+
+    // Generate light/dark variants after mood adjustment
+    return {
+      light: color.clone().set({ "lch.l": 70 }),
+      dark: color.clone().set({ "lch.l": 30 }),
+    };
+  });
 } // Separate function for generating palette
 function generatePalette() {
   const baseColor = document.getElementById("base-color").value;
