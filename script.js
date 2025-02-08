@@ -1,5 +1,6 @@
 import Color from "https://colorjs.io/dist/color.js";
 
+// Constants at root level
 const colorRoles = [
   "Primary",
   "Secondary",
@@ -9,13 +10,185 @@ const colorRoles = [
   "Text",
 ];
 
+const moodAdjustments = {
+  happy: {
+    Primary: {
+      "lch.l": (l) => l * 1.3,
+      "lch.c": (c) => c * 1.2,
+      "lch.h": (h) => h + 5,
+    },
+    Secondary: {
+      "lch.l": (l) => l * 1.2,
+      "lch.c": (c) => c * 0.9,
+      "lch.h": (h) => h + 15,
+    },
+    Accent: {
+      "lch.l": (l) => l * 1.4,
+      "lch.c": (c) => c * 1.4,
+      "lch.h": (h) => h - 10,
+    },
+    Highlight: {
+      "lch.l": (l) => l * 1.25,
+      "lch.c": (c) => c * 1.1,
+      "lch.h": (h) => h + 20,
+    },
+    Background: {
+      "lch.l": (l) => l * 1.1,
+      "lch.c": (c) => c * 0.7,
+      "lch.h": (h) => h,
+    },
+    Text: {
+      "lch.l": (l) => l * 0.9,
+      "lch.c": (c) => c * 0.5,
+      "lch.h": (h) => h,
+    },
+  },
+  calm: {
+    Primary: {
+      "lch.l": (l) => l * 0.95,
+      "lch.c": (c) => c * 0.7,
+      "lch.h": (h) => h - 5,
+    },
+    Secondary: {
+      "lch.l": (l) => l * 0.9,
+      "lch.c": (c) => c * 0.6,
+      "lch.h": (h) => h - 10,
+    },
+    Accent: {
+      "lch.l": (l) => l * 1.1,
+      "lch.c": (c) => c * 0.8,
+      "lch.h": (h) => h + 15,
+    },
+    Highlight: {
+      "lch.l": (l) => l * 1.05,
+      "lch.c": (c) => c * 0.5,
+      "lch.h": (h) => h - 15,
+    },
+    Background: {
+      "lch.l": (l) => l * 0.98,
+      "lch.c": (c) => c * 0.3,
+      "lch.h": (h) => h,
+    },
+    Text: {
+      "lch.l": (l) => l * 0.8,
+      "lch.c": (c) => c * 0.4,
+      "lch.h": (h) => h,
+    },
+  },
+  intense: {
+    Primary: {
+      "lch.l": (l) => l * 0.75,
+      "lch.c": (c) => c * 1.8,
+      "lch.h": (h) => h,
+    },
+    Secondary: {
+      "lch.l": (l) => l * 0.8,
+      "lch.c": (c) => c * 1.6,
+      "lch.h": (h) => h + 30,
+    },
+    Accent: {
+      "lch.l": (l) => l * 0.9,
+      "lch.c": (c) => c * 2.0,
+      "lch.h": (h) => h - 45,
+    },
+    Highlight: {
+      "lch.l": (l) => l * 1.1,
+      "lch.c": (c) => c * 1.4,
+      "lch.h": (h) => h + 15,
+    },
+    Background: {
+      "lch.l": (l) => l * 0.6,
+      "lch.c": (c) => c * 0.8,
+      "lch.h": (h) => h,
+    },
+    Text: {
+      "lch.l": (l) => l * 1.2,
+      "lch.c": (c) => c * 0.6,
+      "lch.h": (h) => h,
+    },
+  },
+  sad: {
+    Primary: {
+      "lch.l": (l) => l * 0.7,
+      "lch.c": (c) => c * 0.6,
+      "lch.h": (h) => h - 10,
+    },
+    Secondary: {
+      "lch.l": (l) => l * 0.75,
+      "lch.c": (c) => c * 0.5,
+      "lch.h": (h) => h - 20,
+    },
+    Accent: {
+      "lch.l": (l) => l * 0.8,
+      "lch.c": (c) => c * 0.7,
+      "lch.h": (h) => h - 30,
+    },
+    Highlight: {
+      "lch.l": (l) => l * 0.85,
+      "lch.c": (c) => c * 0.4,
+      "lch.h": (h) => h - 15,
+    },
+    Background: {
+      "lch.l": (l) => l * 0.6,
+      "lch.c": (c) => c * 0.3,
+      "lch.h": (h) => h - 5,
+    },
+    Text: {
+      "lch.l": (l) => l * 1.3,
+      "lch.c": (c) => c * 0.4,
+      "lch.h": (h) => h,
+    },
+  },
+  energetic: {
+    Primary: {
+      "lch.l": (l) => l * 1.1,
+      "lch.c": (c) => c * 1.6,
+      "lch.h": (h) => h - 15,
+    },
+    Secondary: {
+      "lch.l": (l) => l * 1.15,
+      "lch.c": (c) => c * 1.4,
+      "lch.h": (h) => h + 30,
+    },
+    Accent: {
+      "lch.l": (l) => l * 1.2,
+      "lch.c": (c) => c * 1.8,
+      "lch.h": (h) => h - 45,
+    },
+    Highlight: {
+      "lch.l": (l) => l * 1.25,
+      "lch.c": (c) => c * 1.3,
+      "lch.h": (h) => h + 15,
+    },
+    Background: {
+      "lch.l": (l) => l * 0.9,
+      "lch.c": (c) => c * 0.7,
+      "lch.h": (h) => h,
+    },
+    Text: {
+      "lch.l": (l) => l * 0.8,
+      "lch.c": (c) => c * 0.5,
+      "lch.h": (h) => h,
+    },
+  },
+};
+
+const moodBaseColors = {
+  happy: "#FFD700",
+  calm: "#4682B4",
+  intense: "#DC143C",
+  sad: "#708090",
+  energetic: "#FF4500",
+};
+
+// Main palette generation function
 function generateHarmoniousPalette(baseColor, harmonyType, count) {
   const color = new Color(baseColor);
+  const mood = document.getElementById("mood-select").value;
   let palette = [];
 
   switch (harmonyType) {
     case "analogous":
-      // Generate colors 30 degrees apart
       for (let i = 0; i < count; i++) {
         palette.push(
           color.clone().set({
@@ -26,7 +199,6 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
 
     case "complementary":
-      // For complementary, generate variations around the base and complement
       const complement = color.clone().set({ "lch.h": (h) => h + 180 });
       const step = count > 2 ? 360 / count : 180;
 
@@ -40,7 +212,6 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
 
     case "triadic":
-      // For triadic, distribute colors evenly
       const triadicStep = 360 / count;
       for (let i = 0; i < count; i++) {
         palette.push(
@@ -52,12 +223,23 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
   }
 
-  // Generate light/dark variants
-  return palette.map((color) => ({
-    light: color.clone().set({ "lch.l": 70 }),
-    dark: color.clone().set({ "lch.l": 30 }),
-  }));
+  return palette.map((color, index) => {
+    const role = colorRoles[index];
+    const moodAdjustment =
+      mood && moodAdjustments[mood] && moodAdjustments[mood][role];
+
+    if (moodAdjustment) {
+      color.set(moodAdjustment);
+    }
+
+    return {
+      light: color.clone().set({ "lch.l": 70 }),
+      dark: color.clone().set({ "lch.l": 30 }),
+    };
+  });
 }
+
+// Separate function for generating palette
 function generatePalette() {
   const baseColor = document.getElementById("base-color").value;
   const harmonyType = document.getElementById("harmony-type").value;
@@ -69,41 +251,17 @@ function generatePalette() {
   paletteContainer.innerHTML = "";
 
   palette.forEach((colorSet, index) => {
-    const box = document.createElement("div");
-    box.className = "color-box";
-
-    box.innerHTML = `
-          <div class="color-preview-wrapper">
-              <div class="color-preview light" style="background-color: ${colorSet.light}"></div>
-              <div class="color-preview dark" style="background-color: ${colorSet.dark}"></div>
-          </div>
-          <div class="color-info">
-              <div class="color-hex">
-                  Light: ${colorSet.light}
-                  Dark: ${colorSet.dark}
-              </div>
-              <div class="color-role">${colorRoles[index]}</div>
-          </div>
-      `;
-
+    const box = createColorBox(colorSet, colorRoles[index]);
     paletteContainer.appendChild(box);
   });
 }
 
-const moodBaseColors = {
-  happy: "#FFD700", // Bright yellow
-  calm: "#4682B4", // Steel blue
-  intense: "#DC143C", // Crimson red
-  sad: "#708090", // Slate gray
-  energetic: "#FF4500", // Orange red
-};
-
+// Random palette generation
 function generateRandomPalette() {
   const colorCount = parseInt(document.getElementById("colors-count").value);
   const paletteContainer = document.getElementById("palette");
   paletteContainer.innerHTML = "";
 
-  // Generate random base color or use mood-based color
   const moodSelect = document.getElementById("mood-select");
   const baseColor = moodSelect.value
     ? moodBaseColors[moodSelect.value]
@@ -111,15 +269,12 @@ function generateRandomPalette() {
         .toString(16)
         .padStart(6, "0")}`;
 
-  // Update color picker to show selected/random base color
   document.getElementById("base-color").value = baseColor;
 
-  // Generate harmonious palette from random/mood color
   const harmonyTypes = ["analogous", "complementary", "triadic"];
   const randomHarmony =
     harmonyTypes[Math.floor(Math.random() * harmonyTypes.length)];
 
-  // Update harmony selector
   document.getElementById("harmony-type").value = randomHarmony;
 
   const palette = generateHarmoniousPalette(
@@ -129,63 +284,65 @@ function generateRandomPalette() {
   );
 
   palette.forEach((colorSet, index) => {
-    const box = document.createElement("div");
-    box.className = "color-box";
-
-    box.innerHTML = `
-      <div class="color-preview-wrapper">
-        <div class="color-preview light" style="background-color: ${colorSet.light}"></div>
-        <div class="color-preview dark" style="background-color: ${colorSet.dark}"></div>
-      </div>
-      <div class="color-info">
-        <div class="color-hex">
-          Light: ${colorSet.light}
-          Dark: ${colorSet.dark}
-        </div>
-        <div class="color-role">${colorRoles[index]}</div>
-      </div>
-    `;
-
+    const box = createColorBox(colorSet, colorRoles[index]);
     paletteContainer.appendChild(box);
   });
 }
-function createColorBox(color, role) {
+
+// Toast notification function
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  document.getElementById("toast-container").appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 5000);
+}
+
+// Color box creation function
+function createColorBox(colorSet, role) {
   const box = document.createElement("div");
   box.className = "color-box";
 
   box.innerHTML = `
-      <div class="color-preview" style="background-color: ${color}"></div>
-      <div class="color-info">
-          <div class="color-hex">${color}</div>
-          <div class="color-role">${role}</div>
-      </div>
+    <div class="color-preview-wrapper">
+        <div class="color-preview light" style="background-color: ${colorSet.light}" data-color="${colorSet.light}"></div>
+        <div class="color-preview dark" style="background-color: ${colorSet.dark}" data-color="${colorSet.dark}"></div>
+    </div>
+    <div class="color-info">
+        <div class="color-hex">
+            Light: ${colorSet.light}
+            Dark: ${colorSet.dark}
+        </div>
+        <div class="color-role">${role}</div>
+    </div>
   `;
 
-  box.onclick = () => {
-    navigator.clipboard.writeText(color);
-    alert(`Copied ${color} to clipboard!`);
-  };
+  const lightPreview = box.querySelector(".color-preview.light");
+  const darkPreview = box.querySelector(".color-preview.dark");
+
+  lightPreview.addEventListener("click", () => {
+    navigator.clipboard.writeText(colorSet.light);
+    showToast(`Copied ${colorSet.light} to clipboard!`);
+  });
+
+  darkPreview.addEventListener("click", () => {
+    navigator.clipboard.writeText(colorSet.dark);
+    showToast(`Copied ${colorSet.dark} to clipboard!`);
+  });
 
   return box;
 }
 
-// Theme switcher
-document.getElementById("themeToggle").addEventListener("change", function () {
-  document.body.classList.toggle("dark-theme");
-  document.body.classList.toggle("light-theme");
-  document.getElementById("themeLabel").textContent =
-    document.body.classList.contains("dark-theme") ? "Light Mode" : "Dark Mode";
-});
-
+// Event listeners at root level
 document.addEventListener("DOMContentLoaded", () => {
-  // Add event listeners
   document
     .getElementById("generateBtn")
     .addEventListener("click", generatePalette);
   document
     .getElementById("randomBtn")
     .addEventListener("click", generateRandomPalette);
-
-  // Generate initial palette
   generatePalette();
 });
