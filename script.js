@@ -356,3 +356,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", generateRandomPalette);
   generatePalette();
 });
+
+// Theme switcher
+document.getElementById("themeToggle").addEventListener("change", function () {
+  document.body.classList.toggle("dark-theme");
+  document.body.classList.toggle("light-theme");
+
+  // Update label text based on current theme
+  document.getElementById("themeLabel").textContent =
+    document.body.classList.contains("dark-theme") ? "Light Mode" : "Dark Mode";
+});
