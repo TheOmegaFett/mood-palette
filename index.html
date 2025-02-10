@@ -13,19 +13,19 @@
   </head>
   <body class="light-theme">
     <div id="toast-container"></div>
-    <div class="theme-switch">
+    <div class="theme-switch secondary-elements">
       <label class="switch">
         <input type="checkbox" id="themeToggle" />
-        <span class="slider round"></span>
+        <span class="slider round highlight-elements"></span>
       </label>
-      <span id="themeLabel">Dark Mode</span>
+      <span id="themeLabel" class="accent-elements">Dark Mode</span>
     </div>
 
     <div class="container">
-      <h1>🎨 Color Palette Generator</h1>
+      <h1 class="primary-elements">🎨 Color Palette Generator</h1>
       <div class="controls">
-        <!-- Add mood selector -->
-        <select id="mood-select">
+        <!-- Mood selector with accent styling -->
+        <select id="mood-select" class="accent-elements">
           <option value="happy">Happy 😊</option>
           <option value="calm">Calm 🌿</option>
           <option value="intense">Intense 🔥</option>
@@ -33,29 +33,38 @@
           <option value="energetic">Energetic ⚡</option>
         </select>
 
-        <!-- Add color picker input -->
-        <input type="color" id="base-color" value="#4CAF50" />
+        <!-- Color picker with primary styling -->
+        <input
+          type="color"
+          id="base-color"
+          value="#4CAF50"
+          class="primary-elements"
+        />
 
-        <!-- Add harmony type selector -->
-        <select id="harmony-type">
+        <!-- Harmony type selector with secondary styling -->
+        <select id="harmony-type" class="secondary-elements">
           <option value="analogous">Analogous</option>
           <option value="complementary">Complementary</option>
           <option value="triadic">Triadic</option>
         </select>
 
-        <!-- Add color count selector -->
-        <select id="colors-count">
+        <!-- Color count selector with secondary styling -->
+        <select id="colors-count" class="secondary-elements">
           <option value="3">3 Colors</option>
           <option value="4">4 Colors</option>
           <option value="5" selected>5 Colors</option>
           <option value="6">6 Colors</option>
         </select>
 
-        <!-- Add buttons to generate palettes -->
-        <button id="generateBtn">Generate Palette</button>
-        <button id="randomBtn">Random Palette</button>
+        <!-- Buttons with primary and highlight styling -->
+        <button id="generateBtn" class="primary-elements">
+          Generate Palette
+        </button>
+        <button id="randomBtn" class="highlight-elements">
+          Random Palette
+        </button>
       </div>
-      <div id="palette" class="palette-container"></div>
+      <div id="palette" class="palette-container accent-elements"></div>
     </div>
     <script src="script.js" type="module"></script>
   </body>

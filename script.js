@@ -242,22 +242,46 @@ function generateHarmoniousPalette(baseColor, harmonyType, count) {
       break;
   }
 
-  // Then apply mood adjustments to each color based on its role
-  return palette.map((color, index) => {
-    const role = colorRoles[index];
+  // Ensure we always have Background and Text colors regardless of count
+  const finalPalette = palette.map((color, index) => {
+    // Get role, but cycle back to start if we run out of roles
+    const role = colorRoles[index % colorRoles.length];
 
-    // Apply role-specific mood adjustments if they exist
+    // Apply mood adjustments
     if (mood && moodAdjustments[mood] && moodAdjustments[mood][role]) {
       color.set(moodAdjustments[mood][role]);
     }
 
-    // Generate light/dark variants after mood adjustment
     return {
       light: color.clone().set({ "lch.l": 70 }),
       dark: color.clone().set({ "lch.l": 30 }),
+      role: role, // Store the role with the color
     };
   });
-} // Separate function for generating palette
+
+  // Always ensure Background and Text colors exist
+  if (!finalPalette.some((c) => c.role === "Background")) {
+    const bgColor = palette[0].clone();
+    finalPalette.push({
+      light: bgColor.clone().set({ "lch.l": 95 }),
+      dark: bgColor.clone().set({ "lch.l": 15 }),
+      role: "Background",
+    });
+  }
+
+  if (!finalPalette.some((c) => c.role === "Text")) {
+    const textColor = palette[0].clone();
+    finalPalette.push({
+      light: textColor.clone().set({ "lch.l": 20 }),
+      dark: textColor.clone().set({ "lch.l": 90 }),
+      role: "Text",
+    });
+  }
+
+  return finalPalette;
+}
+
+// Separate function for generating palette
 function generatePalette() {
   const baseColor = document.getElementById("base-color").value;
   const harmonyType = document.getElementById("harmony-type").value;
@@ -351,6 +375,25 @@ function createColorBox(colorSet, role) {
   const lightPreview = box.querySelector(".color-preview.light");
   const darkPreview = box.querySelector(".color-preview.dark");
 
+  // Add preview functionality for light theme
+  lightPreview.addEventListener("mouseenter", () => {
+    applyPreviewTheme(colorSet.light, role);
+  });
+
+  lightPreview.addEventListener("mouseleave", () => {
+    resetTheme();
+  });
+
+  // Add preview functionality for dark theme
+  darkPreview.addEventListener("mouseenter", () => {
+    applyPreviewTheme(colorSet.dark, role);
+  });
+
+  darkPreview.addEventListener("mouseleave", () => {
+    resetTheme();
+  });
+
+  // Click handlers for copying
   lightPreview.addEventListener("click", () => {
     navigator.clipboard.writeText(colorSet.light);
     showToast(`Copied ${colorSet.light} to clipboard!`);
@@ -364,7 +407,77 @@ function createColorBox(colorSet, role) {
   return box;
 }
 
-// Event listeners at root level
+// Helper functions
+function applyPreviewTheme(color, role) {
+  const root = document.documentElement;
+
+  // Store current styles for reset
+  if (!root.getAttribute("data-original-theme")) {
+    const computedStyle = getComputedStyle(document.body);
+    root.setAttribute("data-original-theme", "true");
+    root.setAttribute(
+      "data-original-background",
+      computedStyle.backgroundColor
+    );
+    root.setAttribute("data-original-text", computedStyle.color);
+  }
+
+  // Apply preview colors based on role
+  switch (role) {
+    case "Background":
+      document.body.style.backgroundColor = color;
+      break;
+    case "Text":
+      document.body.style.color = color;
+      break;
+    case "Primary":
+      document.querySelectorAll("button, .primary-elements").forEach((el) => {
+        el.style.backgroundColor = color;
+      });
+      break;
+    case "Secondary":
+      document.querySelectorAll(".secondary-elements").forEach((el) => {
+        el.style.backgroundColor = color;
+      });
+      break;
+    case "Accent":
+      document.querySelectorAll(".accent-elements").forEach((el) => {
+        el.style.backgroundColor = color;
+      });
+      break;
+    case "Highlight":
+      document.querySelectorAll(".highlight-elements").forEach((el) => {
+        el.style.backgroundColor = color;
+      });
+      break;
+  }
+}
+
+function resetTheme() {
+  const root = document.documentElement;
+
+  // Reset to original styles
+  if (root.getAttribute("data-original-theme")) {
+    document.body.style.backgroundColor = root.getAttribute(
+      "data-original-background"
+    );
+    document.body.style.color = root.getAttribute("data-original-text");
+
+    // Reset all modified elements
+    document
+      .querySelectorAll(
+        "button, .primary-elements, .secondary-elements, .accent-elements, .highlight-elements"
+      )
+      .forEach((el) => {
+        el.style.backgroundColor = "";
+      });
+
+    // Clear stored original values
+    root.removeAttribute("data-original-theme");
+    root.removeAttribute("data-original-background");
+    root.removeAttribute("data-original-text");
+  }
+} // Event listeners at root level
 document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("generateBtn")
